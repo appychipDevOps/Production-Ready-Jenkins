@@ -1,0 +1,12 @@
+# Build the docker image.
+docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g)  -t jenkinsprod .
+docker build --build-arg USER_ID=1001 --build-arg GROUP_ID=1001  -t jenkinsprod .
+docker build  -t jenkinsprod .
+
+
+
+# Run the container
+docker run --name jenkins -d --rm --volume /home/appychip/Desktop/EKS/jenkinsdata:/var/jenkins_home -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=admin jenkinsprod
+docker run --name jenkins -d --rm --volume jenkinsdata_v:/var/jenkins_home -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=admin jenkinsprod
+docker run --name jenkins -d --rm --mount type=bind,source=/home/appychip/Desktop/EKS/jenkinsdata,target=/var/jenkins_home -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=admin jenkinsprod
+ --mount type=bind,source=/home/xyz/,target=/var/jenkins_home/xyz

@@ -1,0 +1,39 @@
+jenkins:
+  systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code plugin\n\n"
+  globalNodeProperties:
+    - envVars:
+        env:
+          - key: VARIABLE1
+            value: foo
+          - key: VARIABLE2
+            value: bar
+  remotingSecurity:
+   enabled: true
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+       - id: ${JENKINS_ADMIN_ID}
+         password: ${JENKINS_ADMIN_PASSWORD}
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+        - "Overall/Administer:admin"
+        - "Overall/Read:authenticated"
+unclassified:
+  location:
+    url: http://127.0.0.1:8080/
+
+jobs:
+  - script: >
+      job('freestyle-job') {
+          steps {
+            shell("""
+                echo "The current build number is \$BUILD_NUMBER"
+                echo "The current build ID is \$BUILD_ID"
+                echo "The Job Name is \$JOB_NAME"
+                echo "The Domain name is \$VARIABLE1"
+                echo "The college name  is \$VARIABLE2"
+            """)
+          }
+      }
